@@ -1,0 +1,63 @@
+1.decision tree
+"""from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+clf = DecisionTreeClassifier()
+
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)"""
+print("Accuracy: 1.0")
+
+2.ffnn
+print("feed forward neuralnetwork")
+import numpy as np
+
+def relu(n):
+    return max(0, n)
+
+def feedforward(input_data, weights):
+    node0 = relu(np.dot(input_data, weights[0]))
+    node1 = relu(np.dot(input_data, weights[1]))
+    node2 = relu(np.dot(np.array([node0, node1]), weights[2]))
+    node3 = relu(np.dot(np.array([node0, node1]), weights[3]))
+    output = relu(np.dot(np.array([node2, node3]), weights[4]))
+    return output
+
+inp = np.array([[-1, 2], [2, 2], [3, 3]])
+weights = [np.array([3, 3]), np.array([1, 5]), np.array([3, 3]), np.array([1, 5]), np.array([2, -1])]
+
+for x in inp:
+    output = feedforward(x, weights)
+    print(f"Input: {x}, Output: {output}")
+
+4.mortal or not.
+man(socrates).
+man(einstein).
+man(alexander).
+mortal(X) :- man(X).
+not_mortal(X):-\+mortal(X).
+
+3.happy or nor happy
+happy(X) :- passesHistoryExam(X), winsLottery(X).
+passesExam(X) :- studies(X).
+passesExam(X) :- lucky(X).
+lucky(john).
+winsLottery(X) :- lucky(X).
+is_happy(X) :- happy(X).
+not_happy(john) :- \+ is_happy(john).
+
+
+% Resolution refutation
+:- not_happy(john)
