@@ -46,4 +46,58 @@ if __name__ == "__main__":
     else:
         print("No solution found.")
 
-2.
+2.8 queen
+N = 8
+board = [[0]*N for _ in range(N)]
+
+def attack(i, j):
+    for k in range(0,N):
+        if board[i][k]==1 or board[k][j]==1:
+            return True
+    for k in range(0,N):
+        for l in range(0,N):
+            if (k+l==i+j) or (k-l==i-j):
+                if board[k][l]==1:
+                    return True
+    return False
+
+def N_queens(n):
+    if n==0:
+        return True
+    for i in range(0,N):
+        for j in range(0,N):
+            if (not(attack(i,j))) and (board[i][j]!=1):
+                board[i][j] = 1
+                if N_queens(n-1)==True:
+                    return True
+                board[i][j] = 0
+
+    return False
+
+N_queens(N)
+for i in board:
+    print (i)
+
+3.student,teacher,sub code
+Studies (charlie, csc135). 
+Studies (olivia, csc135). 
+Studies (jack, csc131). 
+Studies (arthur, csc134).
+Teaches (kirke, csc135). 
+Teaches (collins, csc131). 
+Teaches (collins, csc171). 
+Teaches (juniper, csc134). 
+Professor (X, Y) :- teaches(X, C),
+Studies (Y, C).
+
+4.Tower of hanoi
+move_disk(1, Source, Target, _, [move(Source, Target)]).
+move_disk(N, Source, Target, Auxiliary, Moves) :-
+    N > 1,
+    M is N - 1,
+    move_disk(M, Source, Auxiliary, Target, FirstMoves),
+    move_disk(1, Source, Target, _, LastMove),
+    move_disk(M, Auxiliary, Target, Source, RestMoves),
+    append(FirstMoves, [LastMove|RestMoves], Moves).
+hanoi(N, Moves) :-
+    move_disk(N, 'A', 'C', 'B', Moves).
