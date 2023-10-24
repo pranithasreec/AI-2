@@ -1,0 +1,157 @@
+1.missionary cannibal
+print("\n")
+print("\tGame Start\nNow the task is to move all of them to right side of the river")
+print("rules:\n1. The boat can carry at most two people\n2. If cannibals num greater than missionaries then the cannibals would eat the missionaries\n3. The boat cannot cross the river by itself with no people on board")
+lM = 3
+lC = 3		 
+rM=0		 
+rC=0		 
+userM = 0	
+userC = 0	 
+k = 0
+print("\nM M M C C C |	 --- | \n")
+try:
+	while(True):
+		while(True):
+			print("Left side -> right side river travel")
+
+			uM = int(input("Enter number of Missionaries travel => "))	
+			uC = int(input("Enter number of Cannibals travel => "))
+
+			if((uM==0)and(uC==0)):
+				print("Empty travel not possible")
+				print("Re-enter : ")
+			elif(((uM+uC) <= 2)and((lM-uM)>=0)and((lC-uC)>=0)):
+				break
+			else:
+				print("Wrong input re-enter : ")
+		lM = (lM-uM)
+		lC = (lC-uC)
+		rM += uM
+		rC += uC
+
+		print("\n")
+		for i in range(0,lM):
+			print("M ",end="")
+		for i in range(0,lC):
+			print("C ",end="")
+		print("| --> | ",end="")
+		for i in range(0,rM):
+			print("M ",end="")
+		for i in range(0,rC):
+			print("C ",end="")
+		print("\n")
+
+		k +=1
+
+		if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
+			print("Cannibals eat missionaries:\nYou lost the game")
+
+			break
+
+		if((rM+rC) == 6):
+			print("You won the game : \n\tCongrats")
+			print("Total attempt")
+			print(k)
+			break
+		while(True):
+			print("Right side -> Left side river travel")
+			userM = int(input("Enter number of Missionaries travel => "))
+			userC = int(input("Enter number of Cannibals travel => "))
+
+			if((userM==0)and(userC==0)):
+					print("Empty travel not possible")
+					print("Re-enter : ")
+			elif(((userM+userC) <= 2)and((rM-userM)>=0)and((rC-userC)>=0)):
+				break
+			else:
+				print("Wrong input re-enter : ")
+		lM += userM
+		lC += userC
+		rM -= userM
+		rC -= userC
+
+		k +=1
+		print("\n")
+		for i in range(0,lM):
+			print("M ",end="")
+		for i in range(0,lC):
+			print("C ",end="")
+		print("| <-- | ",end="")
+		for i in range(0,rM):
+			print("M ",end="")
+		for i in range(0,rC):
+			print("C ",end="")
+		print("\n")
+
+
+
+		if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
+			print("Cannibals eat missionaries:\nYou lost the game")
+			break
+except EOFError as e:
+	print("\nInvalid input please retry !!")
+
+2.Travelling salesman
+import itertools
+
+def calculate_distance(points, order):
+    total_distance = 0
+    num_points = len(order)
+    for i in range(num_points):
+        point1 = points[order[i]]
+        point2 = points[order[(i + 1) % num_points]]
+        total_distance += calculate_distance_between_points(point1, point2)
+    return total_distance
+
+def calculate_distance_between_points(point1, point2):
+    return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2) ** 0.5
+
+def tsp_bruteforce(points):
+    min_distance = float('inf')
+    optimal_order = None
+
+    num_points = len(points)
+    for order in itertools.permutations(range(num_points)):
+        distance = calculate_distance(points, order)
+        if distance < min_distance:
+            min_distance = distance
+            optimal_order = order
+
+    return min_distance, optimal_order
+
+# Example usage:
+points = {
+    'A': (0, 0),
+    'B': (1, 2),
+    'C': (4, 1),
+    'D': (2, 4)
+}
+min_distance, optimal_order = tsp_bruteforce(list(points.values()))
+optimal_path = [list(points.keys())[i] for i in optimal_order]
+print("Optimal Path:", optimal_path)
+print("Min Distance:", min_distance)
+
+3.Monkey banana
+initial_state([onfloor, atdoor, onchair, hasnothing, atceiling]).
+goal_state([onfloor, atdoor, onfloor, hasbananas, atceiling]).
+action(grab, [onfloor, atbananas, onfloor, hasnothing, atceiling], [hasbananas, atbananas, onfloor, hasnothing, atceiling]).
+action(climbchair, [onfloor, atdoor, onfloor, hasnothing, atceiling], [onchair, atdoor, onfloor, hasnothing, atceiling]).
+action(push, [onfloor, atdoor, onchair, hasnothing, atceiling], [onfloor, atbananas, onchair, hasnothing, atceiling]).
+action(wave, [onfloor, atbananas, onchair, hasnothing, atceiling], [onfloor, atbananas, onchair, hasnothing, atceiling]).
+apply_action(Action, CurrentState, NewState) :- action(Action, CurrentState, NewState).
+dfs(State, _, Actions, Actions) :- goal_state(State).
+dfs(State, Visited, CurrentActions, Actions) :-
+    action(Action, State, NextState),
+    not(member(NextState, Visited)),
+    append(CurrentActions, [Action], NewActions),
+    dfs(NextState, [NextState | Visited], NewActions, Actions).
+find_best_sequence_of_actions(Actions) :-
+    initial_state(InitialState),
+    dfs(InitialState, [InitialState], [], Actions).
+
+4.Forward chaining.
+criminal(X) :- american(X), sells_weapons(X, Y), hostile_nation(Y).
+american(robert).
+sells_weapons(robert, country_a).
+hostile_nation(country_a).
