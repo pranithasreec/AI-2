@@ -35,7 +35,10 @@ if __name__ == "__main__":
     print("Final environment:", vacuum_cleaner.environment)
 
 2.BFS
-print("DFS")
+from collections import deque
+
+print("BFS")
+
 graph = {
     'A': ['B', 'C'],
     'B': ['D', 'E'],
@@ -45,19 +48,21 @@ graph = {
     'F': []
 }
 
-def dfs(graph, start, visited):
-    if start not in visited:
-        print(start, end=' ')
-        visited.add(start)
-        for neighbor in graph[start]:
-            dfs(graph, neighbor, visited)
-
-def dfs_main(graph, start_node):
+def bfs(graph, start):
     visited = set()
-    dfs(graph, start_node, visited)
+    queue = deque([start])
 
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            print(node, end=' ')
+            visited.add(node)
+            queue.extend(neighbor for neighbor in graph[node] if neighbor not in visited)
 
-dfs_main(graph, 'A')
+def bfs_main(graph, start_node):
+    bfs(graph, start_node)
+
+bfs_main(graph, 'A')
 
 3.Name,DOB
 born(jan, 20,3,1977).
