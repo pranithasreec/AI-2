@@ -60,7 +60,7 @@ second_name(tonyblair, blair).
 second_name(georgebush, bush).
 find_first_name(FullName, FirstName) :-
     first_name(FullName, FirstName).
-find second_name(FullName,SecondName):-
+find_second_name(FullName,SecondName):-
     second_name(FullName,SecondName).
 
 4.family relation
