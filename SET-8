@@ -1,0 +1,131 @@
+1.map colouring
+print("kiran")
+def is_safe(graph, node, color, coloring):
+    for neighbor in graph[node]:
+        if neighbor in coloring and coloring[neighbor] == color:
+            return False
+    return True
+
+def map_coloring(graph, colors, coloring, nodes):
+    if not nodes:
+        return True
+
+    node = nodes[0]
+    for color in colors:
+        if is_safe(graph, node, color, coloring):
+            coloring[node] = color
+            if map_coloring(graph, colors, coloring, nodes[1:]):
+                return True
+            coloring.pop(node, None)
+
+    return False
+
+def main():
+    graph = {
+        'A': ['B', 'C'],
+        'B': ['A', 'C', 'D'],
+        'C': ['A', 'B', 'D', 'E'],
+        'D': ['B', 'C', 'E', 'F'],
+        'E': ['C', 'D'],
+        'F': ['D']
+    }
+
+
+    colors = ['Red', 'Green', 'Blue', 'Yellow']
+
+
+    coloring = {}
+
+
+    nodes = list(graph.keys())
+
+    if map_coloring(graph, colors, coloring, nodes):
+        print("Map coloring solution:")
+        for node, color in coloring.items():
+            print(f"{node} -> {color}")
+    else:
+        print("No valid coloring found for the map.")
+
+if __name__ == "__main__":
+    main()
+
+2.a*algo
+import heapq
+
+def heuristic(node, goal):
+    # Replace this with an appropriate heuristic function
+    return 0
+
+def astar(graph, start, goal):
+    open_list = [(0, start)]
+    came_from = {}
+    g_score = {node: float('inf') for node in graph}
+    g_score[start] = 0
+
+    while open_list:
+        current_cost, current_node = heapq.heappop(open_list)
+
+        if current_node == goal:
+            path = []
+            while current_node in came_from:
+                path.insert(0, current_node)
+                current_node = came_from[current_node]
+            path.insert(0, start)
+            return path
+
+        for neighbor, cost in graph[current_node].items():
+            tentative_g_score = g_score[current_node] + cost
+            if tentative_g_score < g_score[neighbor]:
+                came_from[neighbor] = current_node
+                g_score[neighbor] = tentative_g_score
+                f_score = tentative_g_score + heuristic(neighbor, goal)
+                heapq.heappush(open_list, (f_score, neighbor))
+
+    return None
+
+# Example usage:
+graph = {
+    'A': {'B': 1, 'C': 3},
+    'B': {'A': 1, 'C': 1, 'D': 4},
+    'C': {'A': 3, 'B': 1, 'D': 1},
+    'D': {'B': 4, 'C': 1},
+}
+
+start_node = 'A'
+goal_node = 'D'
+path = astar(graph, start_node, goal_node)
+if path:
+    print("Shortest path:", path)
+else:
+    print("No path found.")
+
+3.Inference of data.
+interpret(true) :- !.
+interpret((GoalA, GoalB)) :- !,
+    interpret(GoalA),
+    interpret(GoalB).
+interpret(GoalA -> GoalB) :-
+    interpret(GoalA) -> interpret(GoalB).
+interpret(\+ Goal) :-
+    \+ interpret(Goal).
+fact(penguin(tweety)).
+fact(fly(X)) :- penguin(X).
+
+4.Vowels
+count_vowels(String, Count) :-
+    string_lower(String, Lowercase),
+    atom_chars(Lowercase, Chars),
+    count_vowels_helper(Chars, 0, Count).
+count_vowels_helper([], Count, Count).
+count_vowels_helper([H|T], PartialCount, Count) :-
+    vowel(H),
+    NewPartialCount is PartialCount + 1,
+    count_vowels_helper(T, NewPartialCount, Count).
+count_vowels_helper([H|T], PartialCount, Count) :-
+    \+ vowel(H),
+    count_vowels_helper(T, PartialCount, Count).
+vowel(a).
+vowel(e).
+vowel(i).
+vowel(o).
+vowel(u).
