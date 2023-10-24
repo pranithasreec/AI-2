@@ -91,13 +91,16 @@ Professor (X, Y) :- teaches(X, C),
 Studies (Y, C).
 
 4.Tower of hanoi
-move_disk(1, Source, Target, _, [move(Source, Target)]).
-move_disk(N, Source, Target, Auxiliary, Moves) :-
+hanoi(1, [move(Source, Target)]) :-
+    move(Source, Target).
+hanoi(N, Moves) :-
     N > 1,
     M is N - 1,
-    move_disk(M, Source, Auxiliary, Target, FirstMoves),
-    move_disk(1, Source, Target, _, LastMove),
-    move_disk(M, Auxiliary, Target, Source, RestMoves),
-    append(FirstMoves, [LastMove|RestMoves], Moves).
-hanoi(N, Moves) :-
-    move_disk(N, 'A', 'C', 'B', Moves).
+    hanoi(M, FirstMoves),
+    move(Source, Target),
+    hanoi(M, RestMoves),
+    append(FirstMoves, [move(Source, Target)|RestMoves], Moves).
+
+move('A', 'B').
+move('A', 'C').
+move('B', 'C').
