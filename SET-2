@@ -117,7 +117,9 @@ Bird (eagle).
        Bird (sparrow).
        Bird (penguin).
        Fly (penguin) :- !, fail.
-       Fly(X) :- bird(X).
+       Can_fly:-fly(x),!.
+Can_Fly(X) :- bird(X).
+
 
 4.family relation.
 female(pam).
